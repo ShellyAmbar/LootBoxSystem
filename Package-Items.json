@@ -1,0 +1,18 @@
+﻿{
+    "poolConfig": {
+        "propabiliteis": [ "70", "30" ],
+        "propabiliteisItems": {
+            "70": [
+                { "AnimationName": "Wave" },
+                { "AnimationName": "Dance" },
+                { "Amount":"100" },
+                { "Name": "Pirate" }
+            ],
+            "30": [
+                { "AnimationName": "Wave" },
+                { "Amount": "500" },
+                { "Name": "Skater" }
+            ]
+        }
+    }
+}
