@@ -15,8 +15,8 @@ namespace LootBoxSystem.Tests
             {
 
                 JObject jsObject = FileManager.GetData("Package-Items.json");
-                Assert.AreEqual(jsObject[0], "poolConfig");
-                Assert.AreEqual(jsObject[1], "items");
+                Assert.AreEqual(jsObject[0], "propabiliteisItems");
+                Assert.AreEqual(jsObject[1], "propabiliteis");
             }
         }
     }
