@@ -1,22 +1,22 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using System.Linq;
+using LootBoxSystem.extentions;
 
 namespace LootBoxSystem
 {
     public class LootPool
     {
-        private List<AItem> possibleItems;
-        public int itemsGenerateCount;
-        public List<AItem> items;
+        private Dictionary<string, List<AItem>> possibleItems;
+        private int maxItemsLooted;
+        private List<AItem> items;
         private bool isGenerated;
+        private List<string> itemNames;
         private string propability;
-        static Random rnd = new Random();
-        public LootPool(List<AItem> possibleItems, int itemsGenerateCount, string propability, bool isGenerated=false)
+        public LootPool(Dictionary<string, List<AItem>> possibleItems, int maxItemsLooted, string propability, bool isGenerated=false)
         {
             this.possibleItems = possibleItems;
-            this.itemsGenerateCount = itemsGenerateCount;
+            this.maxItemsLooted = maxItemsLooted;
             this.isGenerated = isGenerated;
             this.propability = propability;
         }
@@ -25,9 +25,9 @@ namespace LootBoxSystem
         {
             Console.WriteLine($"User Opening box...of {this.propability}% propability ");
             this.getGeneratedItems();
-            for (int i = 0; i <= items.Count; i++)
+            for (int i = 0; i < maxItemsLooted; i++)
             {
-                Console.WriteLine("User Picking items");
+                Console.WriteLine("User Picking items...");
                 string message = this.PickItem();
                 Console.WriteLine(message);
             }
@@ -39,23 +39,39 @@ namespace LootBoxSystem
                 return items;
             }
             Console.WriteLine("Generating items...");
-            items = new List<AItem>();
-            for (int i = 0; i < itemsGenerateCount; i++)
+            initializeItems();
+
+            for (int i = 0; i < maxItemsLooted; i++)
             {
                 AItem item = getRandomItem();
-                items.Add(item);
+                addItem(item);
             }
             this.isGenerated = true;
             return items;
         }
 
+        private void addItem(AItem item)
+        {
+            items.Add(item);
+            itemNames.Add(item.GetType().Name);
+        }
+
+        private void initializeItems()
+        {
+            items = new List<AItem>();
+            itemNames = new List<string> { };
+        }
+
         private AItem getRandomItem()
         {
-            int indexRandom = rnd.Next(possibleItems.Count);
-            AItem item = (AItem)possibleItems[indexRandom];
-            possibleItems.RemoveAt(indexRandom);
+            string[] keys = possibleItems.Keys.ToArray(); 
+            List<string> possibleKeys = new List<string>(Array.FindAll(keys, c => !this.itemNames.Contains(c)));
+            string key = possibleKeys.pickRandom();
+            List<AItem> possibleItemsKey = possibleItems[key];
+            AItem item = (AItem)possibleItemsKey.pickRandom();
             return item;
         }
+
         public string PickItem()
         {
             AItem item = this.popItem();

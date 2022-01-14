@@ -61,6 +61,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="extentions\RandomList.cs" />
+    <Compile Include="extentions\Extentions.cs" />
     <Compile Include="LootPool.cs" />
     <Compile Include="PackageItemsStorage.cs" />
     <Compile Include="ItemFactory.cs" />

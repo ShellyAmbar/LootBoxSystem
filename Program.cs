@@ -11,8 +11,6 @@ namespace LootBoxSystem
     {
         static void Main(string[] args)
         {
-            JObject jsObject = FileManager.GetData("Package-Items.json");
-            string newJsonResult = JsonConvert.SerializeObject(jsObject, Formatting.Indented);
             PackageItemsStorage packageItems = new PackageItemsStorage();
             packageItems.load();
             LootGenerator gen = new LootGenerator(packageItems.Propabiliteis, packageItems.PropabiliteisItems);

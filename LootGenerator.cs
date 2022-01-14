@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using LootBoxSystem.extentions;
 
 namespace LootBoxSystem
 {
@@ -24,14 +25,16 @@ namespace LootBoxSystem
             foreach (string propability in propabiliteis)
             {
                 List<AItem> aItems = new List<AItem>();
+                Dictionary<string, List<AItem>> possibleItems = new Dictionary<string, List<AItem>>();  
                 JArray items = (JArray)this.propabiliteisItems[propability];
-                foreach(JObject item in items)
+
+                foreach (JObject item in items)
                 {
                     AItem aItem = ItemFactory.getAItem(item);
-                    aItems.Add(aItem);
+                    possibleItems.AddOrUpdate(aItem.GetType().Name, aItem);
                 }
                 Console.WriteLine($"Creating pool of {propability}");
-                LootPool pool = new LootPool(aItems, maxItems, propability);
+                LootPool pool = new LootPool(possibleItems, maxItems, propability);
                 pools.Add(pool);    
             }
             return pools;
